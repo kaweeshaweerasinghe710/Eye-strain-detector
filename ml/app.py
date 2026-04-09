@@ -7,7 +7,6 @@ import time
 import math
 import mediapipe as mp
 
-
 app = Flask(__name__)
 CORS(app)
 

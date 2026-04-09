@@ -1,0 +1,38 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints (if used)
+.ipynb_checkpoints/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Model files (optional - large files)
+*.dat
+*.h5
+*.pkl
+
+# MediaPipe / temp files
+*.pbtxt
+
+# VS Code settings
+.vscode/
+
+# Build files
+build/
+dist/
