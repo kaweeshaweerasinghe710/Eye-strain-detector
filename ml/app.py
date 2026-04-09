@@ -6,7 +6,14 @@ import base64
 import time
 import math
 import mediapipe as mp
-from mediapipe.python.solutions import face_mesh as mp_face_mesh
+try:
+    
+    mp_face_mesh = mp.solutions.face_mesh
+    mp_drawing = mp.solutions.drawing_utils
+except AttributeError:
+    from mediapipe.python.solutions import face_mesh as mp_face_mesh
+    from mediapipe.python.solutions import drawing_utils as mp_drawing
+    
 
 app = Flask(__name__)
 CORS(app)
