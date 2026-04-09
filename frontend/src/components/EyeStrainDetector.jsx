@@ -8,6 +8,7 @@ export default function EyeStrainDetector() {
   const [isLowBlinkRate, setIsLowBlinkRate] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | running | warning
   const [faceDetected, setFaceDetected] = useState(false);
+  const [isEyeClosed, setIsEyeClosed] = useState(false); // NEW: State for eye open/close
   const [error, setError] = useState(null);
 
   const videoRef = useRef(null);
@@ -24,7 +25,6 @@ export default function EyeStrainDetector() {
     setError(null);
     
     // 1. Tell the backend to reset all global counters
-    // Specifically pointing to port 5000 to hit the Python app directly
     try {
       await fetch("http://localhost:5000/reset", {
         method: "POST",
@@ -67,6 +67,7 @@ export default function EyeStrainDetector() {
     setBlinkRate(0);
     setIsLowBlinkRate(false);
     setFaceDetected(false);
+    setIsEyeClosed(false); // NEW: Reset eye state
     setStatus("idle");
   };
 
@@ -97,6 +98,9 @@ export default function EyeStrainDetector() {
       setFaceDetected(data.face_detected);
       setBlinkCount(data.blinks);
       setBlinkRate(data.blink_rate);
+      
+      // NEW: Update eye closed state based on backend response
+      setIsEyeClosed(data.eye_closed);
 
       // Low blink rate warning: normal rate is 15-20 blinks/min
       // Only warn after enough data (at least 10 seconds tracked)
@@ -119,9 +123,10 @@ export default function EyeStrainDetector() {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+    // Runs slightly faster (every 500ms) to make the Open/Close indicator feel more responsive
     intervalRef.current = setInterval(() => {
       captureFrameAndSend();
-    }, 1000);
+    }, 500); 
   };
 
   const getStatusColor = () => {
@@ -177,10 +182,18 @@ export default function EyeStrainDetector() {
 
             {/* Face detection badge */}
             {isCameraOn && (
-              <div className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5
+              <div className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-md
                 ${faceDetected ? "bg-emerald-500 text-white" : "bg-gray-700 text-gray-300"}`}>
                 <div className={`w-1.5 h-1.5 rounded-full ${faceDetected ? "bg-white" : "bg-gray-400"}`} />
                 {faceDetected ? "Face detected" : "No face"}
+              </div>
+            )}
+
+            {/*  Eye Open/Closed Badge */}
+            {isCameraOn && faceDetected && (
+              <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-md transition-colors duration-200
+                ${isEyeClosed ? "bg-red-600 text-white" : "bg-green-600 text-white"}`}>
+                {isEyeClosed ? "Eyes Closed " : "Eyes Open "}
               </div>
             )}
 
