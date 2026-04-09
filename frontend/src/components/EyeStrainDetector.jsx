@@ -22,6 +22,18 @@ export default function EyeStrainDetector() {
   // Start Camera
   const startCamera = async () => {
     setError(null);
+    
+    // 1. Tell the backend to reset all global counters
+    // Specifically pointing to port 5000 to hit the Python app directly
+    try {
+      await fetch("http://localhost:5000/reset", {
+        method: "POST",
+      });
+    } catch (err) {
+      console.error("Failed to reset backend counters:", err);
+    }
+
+    // 2. Start the camera stream
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: 640, height: 480, facingMode: "user" },
