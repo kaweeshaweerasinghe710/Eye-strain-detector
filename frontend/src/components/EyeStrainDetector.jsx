@@ -8,7 +8,7 @@ export default function EyeStrainDetector() {
   const [isLowBlinkRate, setIsLowBlinkRate] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | running | warning
   const [faceDetected, setFaceDetected] = useState(false);
-  const [isEyeClosed, setIsEyeClosed] = useState(false); // NEW: State for eye open/close
+  const [isEyeClosed, setIsEyeClosed] = useState(false); //  State for eye open/close
   const [error, setError] = useState(null);
 
   const videoRef = useRef(null);
@@ -67,7 +67,7 @@ export default function EyeStrainDetector() {
     setBlinkRate(0);
     setIsLowBlinkRate(false);
     setFaceDetected(false);
-    setIsEyeClosed(false); // NEW: Reset eye state
+    setIsEyeClosed(false); 
     setStatus("idle");
   };
 
@@ -99,10 +99,10 @@ export default function EyeStrainDetector() {
       setBlinkCount(data.blinks);
       setBlinkRate(data.blink_rate);
       
-      // NEW: Update eye closed state based on backend response
+      //  Update eye closed state based on backend response
       setIsEyeClosed(data.eye_closed);
 
-      // Low blink rate warning: normal rate is 15-20 blinks/min
+      
       // Only warn after enough data (at least 10 seconds tracked)
       if (data.tracking_seconds >= 10 && data.blink_rate < 12) {
         setIsLowBlinkRate(true);
@@ -146,7 +146,7 @@ export default function EyeStrainDetector() {
               <Eye className="w-8 h-8 text-white" />
               <div>
                 <h1 className="text-2xl font-bold text-white">Eye Strain Detector</h1>
-                <p className="text-emerald-100 text-sm">Real-time blink rate monitoring</p>
+               
               </div>
             </div>
             {/* Status indicator */}
