@@ -59,6 +59,18 @@ app.post("/reset", async (req, res) => {
   }
 });
 
+app.post('/reset', async (req, res) => {
+  try {
+    const pythonRes = await fetch('http://localhost:5000/reset', {
+      method: 'POST'
+    });
+    const data = await pythonRes.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to reset Python server' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`✅ Node backend running at http://localhost:${PORT}`);
   console.log(`   Proxying ML requests to ${ML_SERVER}`);
