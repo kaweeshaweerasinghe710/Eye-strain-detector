@@ -26,7 +26,7 @@ export default function EyeStrainDetector() {
     
     // 1. Tell the backend to reset all global counters
     try {
-      await fetch("http://localhost:5000/reset", {
+      await fetch("https://kaweeshaweerasinghe-eye-strain-api.hf.space/reset", {
         method: "POST",
       });
     } catch (err) {
@@ -85,7 +85,7 @@ export default function EyeStrainDetector() {
     const imageData = canvas.toDataURL("image/jpeg", 0.8);
 
     try {
-      const res = await fetch("http://localhost:4000/analyze", {
+      const res = await fetch("https://eye-strain-detector.onrender.com/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData }),
