@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 const PORT = 4000;
-const ML_SERVER = "http://localhost:5000";
+const ML_SERVER = "https://kaweeshaweerasinghe-eye-strain-api.hf.space";
 
 // Enable CORS so React (port 3000) can talk to Node
 app.use(cors());
@@ -61,7 +61,7 @@ app.post("/reset", async (req, res) => {
 
 app.post('/reset', async (req, res) => {
   try {
-    const pythonRes = await fetch('http://localhost:5000/reset', {
+    const pythonRes = await fetch('https://kaweeshaweerasinghe-eye-strain-api.hf.space/reset', {
       method: 'POST'
     });
     const data = await pythonRes.json();
